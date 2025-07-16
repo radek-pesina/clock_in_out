@@ -106,16 +106,16 @@ void loop() {
     int m = (elapsed % 3600) / 60;
     int s = elapsed % 60;
 
-    lcd.setCursor(12, 0);
-    lcd.print("IN ");
+    lcd.setCursor(10, 0);
+    lcd.print("  IN ");
 
-    lcd.setCursor(9, 1);
+    lcd.setCursor(10, 1);
     lcd.print(h < 10 ? "0" : ""); lcd.print(h); lcd.print(":");
     lcd.print(m < 10 ? "0" : ""); lcd.print(m); lcd.print(":");
-    lcd.print(s < 10 ? "0" : ""); lcd.print(s);
+    //lcd.print(s < 10 ? "0" : ""); lcd.print(s);
   } else {
-    lcd.setCursor(12, 0);
-    lcd.print("OUT");
+    lcd.setCursor(10, 0);
+    lcd.print("  OUT");
     lcd.setCursor(9, 1);
     lcd.print("         ");
   }
