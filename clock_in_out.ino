@@ -74,7 +74,8 @@ void setup() {
     while (1);
   }
 
-  if (!rtc.isrunning()) {
+  //if (!rtc.isrunning())
+  {
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   }
 
@@ -86,6 +87,15 @@ void setup() {
 
 void loop() {
   DateTime now = rtc.now();
+
+  // Check for serial input
+  if (Serial.available() > 0) {
+    String command = Serial.readStringUntil('\n');
+    command.trim();
+    if (command == "clear") {
+      clearEEPROMLogs();
+    }
+  }
 
   lcd.setCursor(0, 0);
   lcd.print(now.day() < 10 ? "0" : ""); lcd.print(now.day()); lcd.print("/");
@@ -111,7 +121,8 @@ void loop() {
 
     lcd.setCursor(10, 1);
     lcd.print(h < 10 ? "0" : ""); lcd.print(h); lcd.print(":");
-    lcd.print(m < 10 ? "0" : ""); lcd.print(m); lcd.print(":");
+    lcd.print(m < 10 ? "0" : ""); lcd.print(m);
+    //lcd.print(":");
     //lcd.print(s < 10 ? "0" : ""); lcd.print(s);
   } else {
     lcd.setCursor(10, 0);
@@ -191,4 +202,16 @@ void dumpEEPROMRecords() {
            type ? "Clock IN " : "Clock OUT",
            dy, mo, yr, hr, mi, se);
   }
+
+  // Reset eepromAddress to the end of the last valid record
+  eepromAddress = addr > 7 ? addr - 7 : 0;
+  printf("\nSend 'clear' to delete all logs\n");
+}
+
+void clearEEPROMLogs() {
+  for (int i = 0; i < EEPROM.length(); i++) {
+    EEPROM.update(i, 0xFF);
+  }
+  eepromAddress = 0;
+  printf("Logs cleared\n");
 }
