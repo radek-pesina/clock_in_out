@@ -189,7 +189,7 @@ void dumpEEPROMRecords() {
 
   while (addr + 7 <= EEPROM.length()) {
     byte type = EEPROM.read(addr++);
-    byte yr = EEPROM.read(addr++) + 2000;
+    uint16_t yr = EEPROM.read(addr++) + 2000;
     byte mo = EEPROM.read(addr++);
     byte dy = EEPROM.read(addr++);
     byte hr = EEPROM.read(addr++);
